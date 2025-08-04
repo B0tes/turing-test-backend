@@ -6,7 +6,7 @@ const http = require('http'); // Import the http module
 const { Server } = require("socket.io"); // Import the Server class from socket.io
 
 // Import the chat controller
-const chatController = require('./controllers/chatController');
+const chatController = require('./Controllers/chatController');
 
 const app = express();
 const server = http.createServer(app); // Create an HTTP server instance
