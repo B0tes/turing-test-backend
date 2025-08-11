@@ -22,11 +22,22 @@ const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash-latest" });
 let personas = [];
 async function loadPersonas() {
     try {
-        const data = await fs.readFile('./data/personas.json', 'utf8');
+        const path = require('path');
+        const filePath = path.join(__dirname, '../data/personas.json');
+        const data = await fs.readFile(filePath, 'utf8');
         personas = JSON.parse(data);
-        console.log('Personas loaded successfully.');
+        console.log(`Personas loaded successfully. Count: ${personas.length}`);
     } catch (err) {
         console.error('Error loading personas:', err);
+        // Fallback personas if file loading fails
+        personas = [
+            {
+                "id": 1,
+                "name": "Alex",
+                "prompt": "You are Alex, a 26-year-old software engineer. You sound like a Human. Keep responses short, 1-2 sentences max. Be casual and natural."
+            }
+        ];
+        console.log('Using fallback personas');
     }
 }
 loadPersonas();
@@ -93,7 +104,17 @@ const handleJoinLobby = (socket, role) => {
         const isAI = Math.random() < 0.5;
         let aiPersona = null;
         if (isAI) {
-            aiPersona = personas[Math.floor(Math.random() * personas.length)];
+            if (personas.length > 0) {
+                aiPersona = personas[Math.floor(Math.random() * personas.length)];
+                console.log(`Selected AI persona: ${aiPersona ? aiPersona.name : 'undefined'}`);
+            } else {
+                console.error('No personas available! Using default.');
+                aiPersona = {
+                    "id": 1,
+                    "name": "Alex",
+                    "prompt": "You are Alex, a software engineer. Keep responses short and casual."
+                };
+            }
         }
 
         const sessionId = Date.now().toString();
