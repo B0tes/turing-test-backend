@@ -250,7 +250,7 @@ const handleMessage = async (socket, sessionId, message) => {
                 const aiResponse = result.response.text();
                 
                 game.messages.push({ sender: 'ai', text: aiResponse });
-                socket.emit('newMessage', { sender: 'ai', text: aiResponse });
+                tester.socket.emit('newMessage', { sender: 'ai', text: aiResponse });
                 
                 io.to(tester.socket.id).emit('gameEnd', { reason: 'readyToGuess', result: 'Time to make your guess!' });
                 if (testedPerson) {
