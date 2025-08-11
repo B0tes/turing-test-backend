@@ -64,18 +64,7 @@ let personas = [
 ];
 
 async function loadPersonas() {
-    try {
-        // Try to load from file first
-        const path = require('path');
-        const filePath = path.join(__dirname, '../data/personas.json');
-        const data = await fs.readFile(filePath, 'utf8');
-        const filePersonas = JSON.parse(data);
-        personas = filePersonas;
-        console.log(`Personas loaded from file successfully. Count: ${personas.length}`);
-    } catch (err) {
-        console.log('File personas not available, using embedded personas');
-        console.log(`Using embedded personas. Count: ${personas.length}`);
-    }
+    console.log(`Using embedded personas. Count: ${personas.length}`);
 }
 loadPersonas();
 
